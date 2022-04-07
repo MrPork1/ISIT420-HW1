@@ -4,7 +4,7 @@ var router = express.Router();
 var fs = require("fs");
 
 // start by creating data so we don't have to type it in each time
-let ServerMovieArray = [];
+let ServerSalesArray = [];
 
 // define a constructor to create movie objects
 let MovieObject = function (pTitle, pYear, pGenre, pMan, pWoman, pURL) {
@@ -33,10 +33,10 @@ fileManager  = {
   // functions really should take in the name of a file to be more generally useful
   read: function() {
     // has extra code to add 4 movies if and only if the file is empty
-    const stat = fs.statSync('moviesData.json');
+    const stat = fs.statSync('salesData.json');
     if (stat.size !== 0) {                           
-    var rawdata = fs.readFileSync('moviesData.json'); // read disk file
-    ServerMovieArray = JSON.parse(rawdata);  // turn the file data into JSON format and overwrite our array
+    var rawdata = fs.readFileSync('salesData.json'); // read disk file
+    ServerSalesArray = JSON.parse(rawdata);  // turn the file data into JSON format and overwrite our array
     }
     else {
       // make up 3 for testing
@@ -49,8 +49,8 @@ fileManager  = {
   },
   
   write: function() {
-    let data = JSON.stringify(ServerMovieArray);    // take our object data and make it writeable
-    fs.writeFileSync('moviesData.json', data);  // write it
+    let data = JSON.stringify(ServernewSalesArray);    // take our object data and make it writeable
+    fs.writeFileSync('salesData.json', data);  // write it
   },
 }
 
@@ -61,17 +61,17 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET all Movie data */
-router.get('/getAllMovies', function(req, res) {
+router.get('/getAllSales', function(req, res) {
   fileManager.read();
-  res.status(200).json(ServerMovieArray);
+  res.status(200).json(ServerSalesArray);
 });
 
 
 /* Add one new Movie */
-router.post('/AddMovie', function(req, res) {
-  const newMovie = req.body;  // get the object from the req object sent from browser
-  console.log(newMovie);
-  ServerMovieArray.push(newMovie);  // add it to our "DB"  (array)
+router.post('/AddSales', function(req, res) {
+  const newSales = req.body;  // get the object from the req object sent from browser
+  console.log(newSales);
+  ServerSalesArray.push(newSales);  // add it to our "DB"  (array)
   fileManager.write();
   // prepare a reply to the browser
   var response = {
@@ -83,15 +83,15 @@ router.post('/AddMovie', function(req, res) {
 
 // delete movie
 
-router.delete('/DeleteMovie/:ID', (req, res) => {
+router.delete('/DeleteSales/:ID', (req, res) => {
   const ID = req.params.ID;
   let found = false;
   console.log(ID);    
 
-  for(var i = 0; i < ServerMovieArray.length; i++) // find the match
+  for(var i = 0; i < ServernewSalesArray.length; i++) // find the match
   {
-      if(ServerMovieArray[i].ID === ID){
-        ServerMovieArray.splice(i,1);  // remove object from array
+      if(ServernewSalesArray[i].ID === ID){
+        ServernewSalesArray.splice(i,1);  // remove object from array
           found = true;
           fileManager.write();
           break;
@@ -106,7 +106,7 @@ router.delete('/DeleteMovie/:ID', (req, res) => {
   } else {
     var response = {
       status  : 200,
-      success : 'Movie ' + ID + ' deleted!'
+      success : 'Order ' + ID + ' deleted!'
     }
     res.end(JSON.stringify(response)); // send reply
   }

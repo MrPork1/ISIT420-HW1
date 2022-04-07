@@ -31,11 +31,11 @@ document.addEventListener("DOMContentLoaded", function () {
 // add button events ************************************************************************
     
     document.getElementById("buttonSubmitOne").addEventListener("click", function () {
-        let newMovie = new SalesObject;
+        let newSalesObject = new SalesObject;
 
-        fetch('/AddMovie', {
+        fetch('/AddSales', {
             method: "POST",
-            body: JSON.stringify(newMovie),
+            body: JSON.stringify(newSalesObject),
             headers: {"Content-type": "application/json; charset=UTF-8"}
             })
             .then(response => response.json()) 
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function createList() {
 // update local array from server
 
-    fetch('/getAllMovies')
+    fetch('/getAllSales')
     // Handle success
     .then(response => response.json())  // get the data out of the response object
     .then( responseData => fillUL(responseData))    //update our array and li's
@@ -142,9 +142,9 @@ function fillUL(data) {
     divMovieList.appendChild(ul)
 }
 
-function deleteMovie(ID) {
+function deleteSales(ID) {
 
-    fetch('/DeleteMovie/' + ID, {
+    fetch('/DeleteSales/' + ID, {
         method: "DELETE",
        // body: JSON.stringify(_data),
         headers: {"Content-type": "application/json; charset=UTF-8"}
