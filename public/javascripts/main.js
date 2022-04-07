@@ -1,12 +1,25 @@
 
 let movieArray = [];
 
+let storeIDArray = [98053, 98007, 98055, 98011, 98046];
+let cdID =   [123456, 123654, 321456, 321654, 654123, 654321, 543216, 354126, 621453, 623451];
+
 // define a constructor to create movie objects
 let MovieObject = function (pTitle, pYear, pGenre, pMan, pWoman, pURL) {
     this.ID = Math.random().toString(16).slice(5)  // tiny chance could get duplicates!
     this.Title = pTitle;
     this.Year = pYear;
     this.Genre = pGenre;  // action  comedy  drama  horrow scifi  musical  western
+}
+
+let SalesObject = function(pStoreID, pSalesPersonID, pCdID, pPricePaid, pDate) {
+    this.StoreID = storeIDArray[Math.floor(Math.random()* storeIDArray.length)];
+    this.SalesPersonID = Math.floor(Math.random()*24);
+    this.CdID = cdID[Math.floor(Math.random() * cdID.length)];
+    this.PricePaid = Math.floor(Math.random() * (15 - 5 + 1) + 5);
+    let d = new Date();
+    d.toDateString();
+    this.Date = d;
 }
 
 let selectedGenre = "not selected";
@@ -17,9 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // add button events ************************************************************************
     
-    document.getElementById("buttonAdd").addEventListener("click", function () {
-        let newMovie = new MovieObject(document.getElementById("title").value, 
-        document.getElementById("year").value, selectedGenre);
+    document.getElementById("buttonSubmitOne").addEventListener("click", function () {
+        let newMovie = new SalesObject;
 
         fetch('/AddMovie', {
             method: "POST",
@@ -45,22 +57,33 @@ document.addEventListener("DOMContentLoaded", function () {
        
     });
 
-    document.getElementById("buttonGet").addEventListener("click", function () {
-        createList();      
+    document.getElementById("buttonCreate").addEventListener("click", function() {
+        let storeObject = new SalesObject;
+        document.getElementById("p1").innerHTML = storeObject.StoreID;
+        document.getElementById("p2").innerHTML = storeObject.SalesPersonID;
+        document.getElementById("p3").innerHTML = storeObject.CdID;
+        document.getElementById("p4").innerHTML = storeObject.PricePaid;
+        document.getElementById("p5").innerHTML = storeObject.Date;
     });
 
-    document.getElementById("buttonDelete").addEventListener("click", function () {
-        deleteMovie(document.getElementById("deleteID").value);      
-    });
+
+
+    // document.getElementById("buttonGet").addEventListener("click", function () {
+    //     createList();      
+    // });
+
+    // document.getElementById("buttonDelete").addEventListener("click", function () {
+    //     deleteMovie(document.getElementById("deleteID").value);      
+    // });
     
-    document.getElementById("buttonClear").addEventListener("click", function () {
-        document.getElementById("title").value = "";
-        document.getElementById("year").value = "";
-    });
+    // document.getElementById("buttonClear").addEventListener("click", function () {
+    //     document.getElementById("title").value = "";
+    //     document.getElementById("year").value = "";
+    // });
 
-    $(document).bind("change", "#select-genre", function (event, ui) {
-        selectedGenre = $('#select-genre').val();
-    });
+    // $(document).bind("change", "#select-genre", function (event, ui) {
+    //     selectedGenre = $('#select-genre').val();
+    // });
 
   
 

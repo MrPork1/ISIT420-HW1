@@ -14,6 +14,16 @@ let MovieObject = function (pTitle, pYear, pGenre, pMan, pWoman, pURL) {
     this.Genre = pGenre;  // action  comedy  drama  horrow scifi  musical  western
 }
 
+let SalesObject = function(pStoreID, pSalesPersonID, pCdID, pPricePaid, pDate) {
+  this.StoreID = storeIDArray[Math.floor(Math.random()* storeIDArray.length)];
+  this.SalesPersonID = Math.floor(Math.random()*24);
+  this.CdID = cdID[Math.floor(Math.random() * cdID.length)];
+  this.PricePaid = Math.floor(Math.random() * (15 - 5 + 1) + 5);
+  let d = new Date();
+  d.toDateString();
+  this.Date = d;
+}
+
 // my file management code, embedded in an object
 fileManager  = {
 
@@ -30,11 +40,11 @@ fileManager  = {
     }
     else {
       // make up 3 for testing
-      ServerMovieArray.push(new MovieObject("Moonstruck", 1981, "Drama"));
-      ServerMovieArray.push(new MovieObject("Wild At Heart", 1982, "Drama"));
-      ServerMovieArray.push(new MovieObject("Raising Arizona", 1983, "Comedy"));
-      ServerMovieArray.push(new MovieObject("USS Indianapolis", 2016, "Drama"));
-      fileManager.write();
+      // ServerMovieArray.push(new MovieObject("Moonstruck", 1981, "Drama"));
+      // ServerMovieArray.push(new MovieObject("Wild At Heart", 1982, "Drama"));
+      // ServerMovieArray.push(new MovieObject("Raising Arizona", 1983, "Comedy"));
+      // ServerMovieArray.push(new MovieObject("USS Indianapolis", 2016, "Drama"));
+      // fileManager.write();
     }
   },
   
