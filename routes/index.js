@@ -16,7 +16,8 @@ let MovieObject = function (pTitle, pYear, pGenre, pMan, pWoman, pURL) {
 
 let SalesObject = function(pStoreID, pSalesPersonID, pCdID, pPricePaid, pDate) {
   this.StoreID = storeIDArray[Math.floor(Math.random()* storeIDArray.length)];
-  this.SalesPersonID = Math.floor(Math.random()*24);
+  let newArray = dict[this.StoreID];
+  this.SalesPersonID = newArray[Math.floor(Math.random()* newArray.length)];
   this.CdID = cdID[Math.floor(Math.random() * cdID.length)];
   this.PricePaid = Math.floor(Math.random() * (15 - 5 + 1) + 5);
   let d = new Date();
@@ -40,16 +41,16 @@ fileManager  = {
     }
     else {
       // make up 3 for testing
-      // ServerMovieArray.push(new MovieObject("Moonstruck", 1981, "Drama"));
+      //ServerSalesArray.push(new SalesObject());
       // ServerMovieArray.push(new MovieObject("Wild At Heart", 1982, "Drama"));
       // ServerMovieArray.push(new MovieObject("Raising Arizona", 1983, "Comedy"));
       // ServerMovieArray.push(new MovieObject("USS Indianapolis", 2016, "Drama"));
-      // fileManager.write();
+      //fileManager.write();
     }
   },
   
   write: function() {
-    let data = JSON.stringify(ServernewSalesArray);    // take our object data and make it writeable
+    let data = JSON.stringify(ServerSalesArray);    // take our object data and make it writeable
     fs.writeFileSync('salesData.json', data);  // write it
   },
 }
