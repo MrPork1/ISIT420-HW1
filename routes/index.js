@@ -3,6 +3,28 @@ var express = require('express');
 var router = express.Router();
 var fs = require("fs");
 
+const mongoose = require("mongoose");
+
+const OrdersSchema = require("../orderSchema");
+
+const dbURI = "mongodb+srv://ironman:jarvas@seank-cluster.i2vdg.mongodb.net/Orders?retryWrites=true&w=majority";
+
+mongoose.set('useFindAndModify', false);
+
+const options = {
+  reconnectTries: Number.MAX_VALUE,
+  poolSize: 10
+}
+
+mongoose.connect(dbURI, options).then(
+ () => {
+   console.log("Database connection made.");
+ },
+ err => {
+   console.log("Error connecting to DB", err);
+ }
+);
+
 // start by creating data so we don't have to type it in each time
 let ServerSalesArray = [];
 
