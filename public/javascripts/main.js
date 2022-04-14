@@ -1,5 +1,6 @@
 
 let orderArray = [];
+let cdArray = [];
 
 let storeIDArray = [98053, 98007, 98077, 98055, 98011, 98046];
 let cdID =   [123456, 123654, 321456, 321654, 654123, 654321, 543216, 354126, 621453, 623451];
@@ -57,7 +58,14 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("SumQuery").addEventListener("click", function () {
         fetch('/sum')
         .then(response => response.json())
-        .then(responseData => fillUL(responseData))
+        .then(responseData => fillULTopSales(responseData))
+        .catch(err => console.log('Request Failed',  err));
+    });
+
+    document.getElementById("CDQuery").addEventListener("click", function () {
+        fetch('/totalcd')
+        .then(response => response.json())
+        .then(responseData => fillULTotalCDSold(responseData))
         .catch(err => console.log('Request Failed',  err));
     });
 
@@ -73,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             let newSalesObject = new SalesObject;
             //console.log(newSalesObject);                        
-            let numMinutes = Math.floor(Math.random() * (30 - 5 + 1) + 5);
+            let numMinutes = Math.floor(Math.random() * (5000 - 1000 + 1) + 1000);
             newSalesObject.Date = new Date(currentDate + numMinutes * 60000);
             PushSalesObject(newSalesObject);
             //console.log(newSalesObject);
@@ -92,9 +100,35 @@ document.addEventListener("DOMContentLoaded", function () {
   
 // end of wait until document has loaded event  *************************************************************************
 
-function fillUL(data) {
+function fillULTopSales(data) {
     orderArray = data;
     console.log(orderArray);
+    var orderList = document.getElementById("divOrderList");
+    while (orderList.firstChild) {
+        orderList.removeChild(orderList.firstChild);
+    };
+
+    var ul = document.createElement('ul');
+    var li = document.createElement('li');
+    li.innerHTML = "Sales Person ID: " + orderArray[0]._id + ". Total Sales (Price Paid): $" + orderArray[0].total;
+    ul.appendChild(li);
+    orderList.appendChild(ul);
+}
+
+function fillULTotalCDSold(data) {
+    cdArray = data;
+    console.log(cdArray);
+    var cdList = document.getElementById("divCDList");
+    while (cdList.firstChild) {
+        cdList.removeChild(cdList.firstChild);
+    };
+
+    var ul = document.createElement('ul');
+    var li = document.createElement('li');
+    li.innerHTML = "Total CDs sold on 14th of April 2022: " + cdArray.length;
+    ul.appendChild(li);
+
+    cdList.appendChild(ul);
 }
 
 function PushSalesObject(pSalesObject) {

@@ -101,6 +101,29 @@ router.get('/getQueryOne', function(req, res) {
   }));
 });
 
+
+
+router.get('/totalcd', function(req, res) {
+
+  let startDate = new Date('2022-04-14T20:51:42.233+00:00');
+  let endDate = new Date('2022-04-15T20:51:42.233+00:00');
+
+  OrderSchema.find({
+    Date: {
+      $gte: new Date(startDate),
+      $lte: new Date(endDate)
+    }
+  },
+  function(err, result) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(result);
+      console.log(result);
+    }
+  });
+});
+
 router.get('/sum', function(req,res) {
   OrderSchema.aggregate(
     [
@@ -110,8 +133,11 @@ router.get('/sum', function(req,res) {
           total: {
             $sum: "$PricePaid"
           }
+      }},
+        { $sort: {
+          total:-1 
         }
-      }
+        }
     ],
     function(err, result) {
       if (err) {
