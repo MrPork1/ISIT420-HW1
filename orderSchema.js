@@ -25,4 +25,7 @@ const OrderSchema = new Schema({
     }
 });
 
-module.exports = mongoose.module("Orders", OrderSchema);
+module.exports = mongoose.model("Orders", OrderSchema);
+
+//1. Who are the highest grossing sales persons and what store do they work for?
+//2. How many CDs were sold in the first 5 minutes?

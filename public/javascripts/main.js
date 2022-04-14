@@ -1,4 +1,6 @@
 
+let orderArray = [];
+
 let storeIDArray = [98053, 98007, 98077, 98055, 98011, 98046];
 let cdID =   [123456, 123654, 321456, 321654, 654123, 654321, 543216, 354126, 621453, 623451];
 
@@ -52,6 +54,13 @@ document.addEventListener("DOMContentLoaded", function () {
        
     });
 
+    document.getElementById("SumQuery").addEventListener("click", function () {
+        fetch('/sum')
+        .then(response => response.json())
+        .then(responseData => fillUL(responseData))
+        .catch(err => console.log('Request Failed',  err));
+    });
+
     document.getElementById("buttonSubmit500").addEventListener("click", function() {
 
         let currentDate = Date.now();
@@ -63,11 +72,11 @@ document.addEventListener("DOMContentLoaded", function () {
         for(let i = 0; i < 499; i++)
         {
             let newSalesObject = new SalesObject;
-            console.log(newSalesObject);                        
+            //console.log(newSalesObject);                        
             let numMinutes = Math.floor(Math.random() * (30 - 5 + 1) + 5);
             newSalesObject.Date = new Date(currentDate + numMinutes * 60000);
             PushSalesObject(newSalesObject);
-            console.log(newSalesObject);
+            //console.log(newSalesObject);
         }
     });
 
@@ -82,6 +91,11 @@ document.addEventListener("DOMContentLoaded", function () {
 });
   
 // end of wait until document has loaded event  *************************************************************************
+
+function fillUL(data) {
+    orderArray = data;
+    console.log(orderArray);
+}
 
 function PushSalesObject(pSalesObject) {
     fetch('/AddSales', {

@@ -5,7 +5,7 @@ var fs = require("fs");
 
 const mongoose = require("mongoose");
 
-const OrdersSchema = require("../orderSchema");
+const OrderSchema = require("../orderSchema");
 
 const dbURI = "mongodb+srv://ironman:jarvas@seank-cluster.i2vdg.mongodb.net/Orders?retryWrites=true&w=majority";
 
@@ -89,20 +89,59 @@ router.get('/getAllSales', function(req, res) {
   res.status(200).json(ServerSalesArray);
 });
 
+router.get('/getQueryOne', function(req, res) {
+  let which = "drama";
+  OrderSchema.find({ Genre: which, Year: {$gt: 1971, $lt: 1996 } }.sort({Year: -1}).exec(function(err, AllOrders) {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
+    console.log(AllOrders);
+    res.status(200).json(AllOrders);
+  }));
+});
+
+router.get('/sum', function(req,res) {
+  OrderSchema.aggregate(
+    [
+      {
+        $group: {
+          _id: "$SalesPersonID",
+          total: {
+            $sum: "$PricePaid"
+          }
+        }
+      }
+    ],
+    function(err, result) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.json(result);
+        console.log(result);
+      }
+    }
+  );
+});
+
+
 
 /* Add one new Movie */
 router.post('/AddSales', function(req, res) {
-  const newSales = req.body;  // get the object from the req object sent from browser
-  console.log(newSales);
-  ServerSalesArray.push(newSales);  // add it to our "DB"  (array)
-  fileManager.write();
-  // prepare a reply to the browser
-  var response = {
-    status  : 200,
-    success : 'Added Successfully'
-  }
-  res.end(JSON.stringify(response)); // send reply
-});
+  let oneNewOrder = new OrderSchema(req.body);
+  oneNewOrder.save((err, todo) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    else {
+      var response = {
+        status : 200,
+        success : 'Added Successfully'
+      }
+      res.end(JSON.stringify(response));
+      }
+    });
+  });
 
 // delete movie
 
